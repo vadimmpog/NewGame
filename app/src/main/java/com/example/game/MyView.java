@@ -7,10 +7,13 @@ import android.graphics.Paint;
 import android.os.CountDownTimer;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 
-
-public class MyView extends View    {
+interface Absorb{
+        public void Eat(int i);
+}
+public class MyView extends View implements Absorb   {
 
     int N = 10;
     int M =10;
@@ -41,9 +44,9 @@ public class MyView extends View    {
 
     public void Compare(){
         for(int i=0;i<N;i++){
-            if((slime.x>pices[i].x-pices[i].size&&slime.x<pices[i].x+pices[i].size)&&slime.y>pices[i].y-pices[i].size&&slime.y<pices[i].y+pices[i].size){
-                pices[i].death=true;
-                slime.PlusSize(1);
+            if((slime.getX()>pices[i].getX()-pices[i].size&&slime.getX()<pices[i].getX()+pices[i].size)
+                    &&slime.getY()>pices[i].getY()-pices[i].size&&slime.getY()<pices[i].getY()+pices[i].size){
+                Eat(i);
                 q=0;
                 for(int j=0;j<N;j++) {
                     if(pices[j].death)
@@ -55,7 +58,8 @@ public class MyView extends View    {
 
         }
         for(int i=0;i<M;i++){
-            if((slime.x>spikes[i].x-spikes[i].size&&slime.x<spikes[i].x+pices[i].size)&&slime.y>spikes[i].y-spikes[i].size&&slime.y<spikes[i].y+pices[i].size){
+            if((slime.getX()>spikes[i].getX()-spikes[i].size&&slime.getX()<spikes[i].getX()+pices[i].size)
+                    &&slime.getY()>spikes[i].getY()-spikes[i].size&&slime.getY()<spikes[i].getY()+pices[i].size){
                 spikes[i].killSlime(slime);
                 k=-10;
             }
@@ -64,12 +68,13 @@ public class MyView extends View    {
 
     void moveObjects() {
         for (int i = 0; i < N; i++) {
-            pices[i].x+= pices[i].Vx;
-            pices[i].y+= pices[i].Vy;
+            pices[i].setX(pices[i].Vx+pices[i].getX());
+            pices[i].setY(pices[i].Vy+pices[i].getY());
         }
         for (int i = 0; i < M; i++) {
-            spikes[i].x+= spikes[i].Vx;
-            spikes[i].y+= spikes[i].Vy;
+            spikes[i].setX(spikes[i].Vx+spikes[i].getX());
+            spikes[i].setY(spikes[i].Vy+spikes[i].getY());
+
         }
         Compare();
 
@@ -99,41 +104,41 @@ public class MyView extends View    {
 
             for (int i = 0; i < N; i++) {
                 paint.setColor(Color.GREEN);
-                if(!pices[i].death) canvas.drawCircle(pices[i].x, pices[i].y, pices[i].size, paint);
+                if(!pices[i].death) canvas.drawCircle(pices[i].getX(), pices[i].getY(), pices[i].size, paint);
 
-                if (pices[i].x-pices[i].size < 0 || pices[i].x+pices[i].size > this.getWidth()) {
+                if (pices[i].getX()-pices[i].size < 0 || pices[i].getX()+pices[i].size > this.getWidth()) {
                     pices[i].Vx = -pices[i].Vx;
                 }
-                if (pices[i].y-pices[i].size < 0 || pices[i].y+pices[i].size > this.getHeight()) {
+                if (pices[i].getY()-pices[i].size < 0 || pices[i].getY()+pices[i].size > this.getHeight()) {
                     pices[i].Vy = -pices[i].Vy;
                 }
-                if (pices[i].x < 0 || pices[i].x > this.getHeight()) {
+                if (pices[i].getX() < 0 || pices[i].getX() > this.getHeight()) {
                     pices[i].Vx = (float) (Math.random() * 8 + 2);
                     pices[i].Vy = (float) (Math.random() * 8 + 2);
                 }
-                pices[i].x += pices[i].Vx;
-                pices[i].y += pices[i].Vy;
+                pices[i].setX(pices[i].Vx+pices[i].getX());
+                pices[i].setY(pices[i].Vy+pices[i].getY());
             }
             paint.setColor(Color.BLACK);
             for (int i = 0; i < M; i++) {
-                canvas.drawCircle(spikes[i].x, spikes[i].y, spikes[i].size, paint);
-                if (spikes[i].x-spikes[i].size < 0 || spikes[i].x+spikes[i].size > this.getWidth()) {
+                canvas.drawCircle(spikes[i].getX(), spikes[i].getY(), spikes[i].size, paint);
+                if (spikes[i].getX()-spikes[i].size < 0 || spikes[i].getX()+spikes[i].size > this.getWidth()) {
                     spikes[i].Vx = -spikes[i].Vx;
                 }
-                if (spikes[i].y-spikes[i].size < 0 || spikes[i].y+spikes[i].size > this.getHeight()) {
+                if (spikes[i].getY()-spikes[i].size < 0 || spikes[i].getY()+spikes[i].size > this.getHeight()) {
                     spikes[i].Vy = -spikes[i].Vy;
                 }
-                if (spikes[i].x < 0 || spikes[i].x > this.getHeight()) {
+                if (spikes[i].getX() < 0 || spikes[i].getX() > this.getHeight()) {
                     spikes[i].Vx = (float) (Math.random() * 8 + 2);
                     spikes[i].Vy = (float) (Math.random() * 8 + 2);
                 }
-                spikes[i].x += spikes[i].Vx;
-                spikes[i].y += spikes[i].Vy;
+                spikes[i].setX(spikes[i].Vx+spikes[i].getX());
+                spikes[i].setY(spikes[i].Vy+spikes[i].getY());
             }
 
             Paint paint_slime  =new Paint();
             paint_slime.setColor(Color.GREEN);
-            if(!slime.death)canvas.drawCircle(slime.x,slime.y,slime.size,paint_slime);
+            if(!slime.death)canvas.drawCircle(slime.getX(),slime.getY(),slime.size,paint_slime);
         }
         else{
             if(k==N){
@@ -158,6 +163,12 @@ public class MyView extends View    {
     void nextFrame( ) {
         moveObjects();
         invalidate();
+    }
+
+    @Override
+    public void Eat(int i) {
+        pices[i].death=true;
+        slime.PlusSize(1);
     }
 
     class MyTimer extends CountDownTimer {

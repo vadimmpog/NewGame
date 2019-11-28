@@ -5,8 +5,8 @@ interface  Kill{
 }
 
 public abstract class Objects {
-    float x;
-    float y;
+    private float x;
+    private float y;
     float size;
     boolean death = false;
 
@@ -23,6 +23,14 @@ public abstract class Objects {
 
     public void setY(float y) {
         this.y = y;
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
     }
 
     abstract void die();
